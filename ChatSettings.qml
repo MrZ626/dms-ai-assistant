@@ -191,7 +191,7 @@ Item {
 
             EditRow {
                 id: fieldBaseUrl
-                label: "服务商URL"
+                label: "服务商URL（必须和OpenAI兼容）"
                 value: root.chatService.baseUrl
             }
 
@@ -216,7 +216,7 @@ Item {
 
             SliderRow {
                 id: sliderTemp
-                label: "温度（越高越随机）"
+                label: "温度（越高思维越跳脱、随机、不准确）"
                 value: root.chatService.temperature
                 from: 0
                 to: 2

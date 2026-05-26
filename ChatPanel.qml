@@ -99,7 +99,7 @@ Item {
             // 没有消息时的提示文字
             StyledText {
                 anchors.centerIn: parent
-                text: "发送消息开始对话"
+                text: "有什么可以帮到你的？"
                 color: Theme.surfaceVariantText
                 font.pixelSize: Theme.fontSizeMedium
                 visible: chatService.messagesModel.count === 0
@@ -226,8 +226,6 @@ Item {
             height: 100
             radius: Theme.cornerRadius
             color: Theme.surfaceContainerHigh
-            opacity: chatService.isLoading ? 0.5 : 1.0
-            Behavior on opacity { NumberAnimation { duration: 150 } }
             border.color: composerFlick.activeFocus || composer.activeFocus
                 ? Theme.primary : Theme.outlineMedium
             border.width: composerFlick.activeFocus || composer.activeFocus ? 2 : 1
@@ -278,7 +276,7 @@ Item {
                                 left: parent.left
                                 top: parent.top
                             }
-                            text: "输入消息内容， Enter 发送\nShift+Enter 换行，Esc 中断生成/关闭"
+                            text: "输入消息内容， Enter 发送\nShift+Enter 换行，Esc 中断生成/关闭面板"
                             color: Theme.surfaceVariantText
                             font.pixelSize: Theme.fontSizeMedium
                             visible: composer.text.length === 0
@@ -310,18 +308,19 @@ Item {
                 }
             }
 
-            // 发送按钮：浮在输入框右下角，不参与 layout
+            // 发送 / 停止按钮：浮在输入框右下角，不参与 layout
             DankActionButton {
                 id: sendBtn
                 anchors.right:  parent.right
                 anchors.bottom: parent.bottom
                 anchors.margins: Theme.spacingXS
-                iconName: "send"
-                tooltipText: "发送"
+                iconName: chatService.isLoading ? "stop_circle" : "send"
+                tooltipText: chatService.isLoading ? "停止生成" : "发送"
                 buttonSize: 32
-                iconSize: 16
-                enabled: !chatService.isLoading
-                onClicked: root.triggerSendMessage()
+                iconSize: chatService.isLoading ? 20 : 16
+                iconColor: chatService.isLoading ? "#e05555" : Theme.primary
+                enabled: true
+                onClicked: chatService.isLoading ? chatService.abortRequest() : root.triggerSendMessage()
             }
         }
     }
