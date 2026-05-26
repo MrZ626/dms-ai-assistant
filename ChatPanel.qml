@@ -140,11 +140,16 @@ Item {
                         readonly property real maxWidth: parent.width * 0.8
                         readonly property bool isLoading: msgDelegate.status === "loading" && msgDelegate.content.length === 0
                         readonly property bool isError:   msgDelegate.status === "error"
+                        // assistant 消息渲染完成后用 maxWidth（Markdown 标题/代码块宽度不可预测）
+                        readonly property bool useMaxWidth: msgDelegate.role === "assistant"
+                                                         && msgDelegate.status === "ok"
 
-                        // loading 时固定高度（给点动画留出空间），否则按文字自适应
+                        // loading 时固定宽度，assistant ok 时用 maxWidth，其余动态量宽
                         width: isLoading
                             ? 72
-                            : Math.min(bubbleSizer.contentWidth + hPad, maxWidth)
+                            : (useMaxWidth
+                               ? maxWidth
+                               : Math.min(bubbleSizer.contentWidth + hPad, maxWidth))
                         height: (isLoading ? 28 : bubbleText.implicitHeight)
                             + Theme.spacingS * 2
 
@@ -168,7 +173,8 @@ Item {
                             enabled: false
                         }
 
-                        // 气泡 （TextEdit 支持鼠标选中复制）
+                        // 气泡文字（TextEdit 支持鼠标选中复制）
+                        // 流式生成中用 PlainText，完成后切换为 MarkdownText
                         TextEdit {
                             id: bubbleText
                             anchors {
@@ -180,6 +186,9 @@ Item {
                                 topMargin: Theme.spacingS
                             }
                             text: msgDelegate.content
+                            textFormat: (msgDelegate.role === "assistant" && msgDelegate.status === "ok")
+                                        ? TextEdit.MarkdownText
+                                        : TextEdit.PlainText
                             wrapMode: Text.Wrap
                             readOnly: true
                             selectByMouse: true
