@@ -27,7 +27,7 @@ Item {
 
     // 便捷函数：读取输入框内容并发送
     function triggerSendMessage() {
-        if (composer.text.trim().length === 0)
+        if (composer.text.trim().length === 0 || chatService.isLoading)
             return
         chatService.sendMessage(composer.text)
         composer.text = ""
@@ -266,9 +266,8 @@ Item {
                                     // 换行
                                     event.accepted = false
                                 } else {
-                                    // 发送（loading 中忽略）
-                                    if (!chatService.isLoading)
-                                        root.triggerSendMessage()
+                                    // 发送
+                                    root.triggerSendMessage()
                                     event.accepted = true
                                 }
                             }
@@ -290,7 +289,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.margins: Theme.spacingXS
                 iconName: "send"
-                tooltipText: "发送(Enter)"
+                tooltipText: "发送"
                 buttonSize: 32
                 iconSize: 16
                 enabled: !chatService.isLoading

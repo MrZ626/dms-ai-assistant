@@ -174,10 +174,16 @@ Item {
                 try {
                     const data = JSON.parse(errText)
                     if (data.error) {
-                        root._setError("API 错误：" + (data.error.message || JSON.stringify(data.error)))
+                        root._setError(data.error.message || JSON.stringify(data.error, null, 2))
                         return
                     }
-                } catch (e) {}
+                    // JSON 合法但结构不认识，直接显示
+                    root._setError(JSON.stringify(data, null, 2))
+                } catch (e) {
+                    // 不是 JSON，直接显示原文
+                    root._setError(errText)
+                }
+                return
             }
             root._setError("收到空响应")
         }
