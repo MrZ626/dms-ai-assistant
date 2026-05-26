@@ -234,6 +234,7 @@ Item {
                     TextEdit {
                         id: composer
                         width: composerFlick.width
+                        height: Math.max(implicitHeight, composerFlick.height)
                         wrapMode: TextEdit.Wrap
                         font.pixelSize: Theme.fontSizeMedium
                         color: Theme.surfaceText
@@ -277,23 +278,20 @@ Item {
                         }
                     }
                 }
+            }
 
-                // 底部工具栏
-                RowLayout {
-                    Layout.fillWidth: true
-                    spacing: Theme.spacingXS
-
-                    Item { Layout.fillWidth: true }
-
-                    DankActionButton {
-                        iconName: "send"
-                        tooltipText: "发送"
-                        buttonSize: 32
-                        iconSize: 16
-                        enabled: !chatService.isLoading
-                        onClicked: root.triggerSendMessage()
-                    }
-                }
+            // 发送按钮：浮在输入框右下角，不参与 layout
+            DankActionButton {
+                id: sendBtn
+                anchors.right:  parent.right
+                anchors.bottom: parent.bottom
+                anchors.margins: Theme.spacingXS
+                iconName: "send"
+                tooltipText: "发送(Enter)"
+                buttonSize: 32
+                iconSize: 16
+                enabled: !chatService.isLoading
+                onClicked: root.triggerSendMessage()
             }
         }
     }
