@@ -24,8 +24,10 @@ Item {
     }
 
     // ChatService 单例：所有屏幕共享同一份消息状态
+    // 注意：ID 用 chatLogic 而非 chatService，避免与 ChatPanel 的 required property
+    // 同名导致 content: ChatPanel { chatService: chatService } 右侧解析到自身属性（undefined）
     ChatService {
-        id: chatService
+        id: chatLogic
         pluginId: root.pluginId
     }
 
@@ -44,7 +46,7 @@ Item {
             expandedWidthValue: 960
 
             content: ChatPanel {
-                chatService: chatService
+                chatService: chatLogic
                 onHideRequested: slideout.hide()
             }
         }
