@@ -1,0 +1,12 @@
+{
+  "id": "quickAiChat",
+  "name": "Quick AI Chat",
+  "description": "快速唤出的 AI 聊天面板",
+  "version": "0.1.0",
+  "author": "z",
+  "type": "daemon",
+  "capabilities": ["slideout"],
+  "component": "./QuickAiChat.qml",
+  "icon": "smart_toy",
+  "permissions": ["settings_read", "settings_write"]
+}
