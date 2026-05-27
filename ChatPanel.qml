@@ -96,13 +96,13 @@ Item {
             border.width: 1
             clip: true
 
-            // 没有消息时的提示文字
-            StyledText {
+            // 欢迎文字
+            Text {
                 anchors.centerIn: parent
-                text: chatService.proMode ? "使用专家模式开始对话" : "使用快速模式开始对话"
+                textFormat: Text.MarkdownText
+                text: chatService.proMode ? "使用 **专家模式** 开始对话" : "使用 **快速模式** 开始对话"
                 color: Theme.surfaceVariantText
                 font.pixelSize: Theme.fontSizeLarge
-                font.bold: true
                 visible: chatService.messagesModel.count === 0
             }
 
