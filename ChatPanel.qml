@@ -287,7 +287,7 @@ Item {
                                 left: parent.left
                                 top: parent.top
                             }
-                            text: "输入消息内容…\nShift+Enter 换行，Esc 中断/关闭\nTab 切换模型，Ctrl+Tab 切换展开"
+                            text: "输入消息内容…\nShift+Enter 换行，Esc 中断/关闭，Ctrl+N 清空\nTab 切换模型，Ctrl+Tab 切换展开"
                             color: Qt.rgba(Theme.surfaceVariantText.r, Theme.surfaceVariantText.g, Theme.surfaceVariantText.b, 0.62)
                             font.pixelSize: Theme.fontSizeMedium
                             visible: composer.text.length === 0
@@ -296,6 +296,9 @@ Item {
                         Keys.onPressed: event => {
                             if (event.key === Qt.Key_Escape) {
                                 root.handleEscape()
+                                event.accepted = true
+                            } else if (event.key === Qt.Key_N && (event.modifiers & Qt.ControlModifier)) {
+                                chatService.clearHistory()
                                 event.accepted = true
                             } else if (event.key === Qt.Key_Tab) {
                                 if (event.modifiers & Qt.ControlModifier) {
