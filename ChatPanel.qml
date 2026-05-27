@@ -316,17 +316,27 @@ Item {
                 }
             }
 
-            // Pro 模式切换按钮：浮在发送按钮左侧
-            DankActionButton {
+            // 专家模式开关
+            Rectangle {
                 id: proModeBtn
-                anchors.right:  sendBtn.left
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: Theme.spacingXS
-                iconName: "atom"
-                buttonSize: 32
-                iconSize: 18
-                iconColor: chatService.proMode ? Theme.primary : Theme.surfaceVariantText
-                onClicked: chatService.proMode = !chatService.proMode
+                anchors { right: sendBtn.left; bottom: parent.bottom; rightMargin: Theme.spacingXS; bottomMargin: Theme.spacingXS }
+                height: 32
+                width:  proModeBtnLabel.implicitWidth + Theme.spacingM * 2
+                radius: height / 2
+                color:        chatService.proMode ? Qt.rgba(Theme.primary.r, Theme.primary.g, Theme.primary.b, 0.15) : "transparent"
+                border.color: chatService.proMode ? Theme.primary : Theme.outlineMedium
+
+                StyledText {
+                    id: proModeBtnLabel
+                    anchors.centerIn: parent
+                    text: "󰇈  专家模式"
+                    font.pixelSize: Theme.fontSizeSmall
+                    color: chatService.proMode ? Theme.primary : Theme.surfaceVariantText
+                }
+                MouseArea {
+                    anchors.fill: parent; cursorShape: Qt.PointingHandCursor
+                    onClicked: chatService.proMode = !chatService.proMode
+                }
             }
 
             // 发送 / 停止按钮：浮在输入框右下角，不参与 layout
@@ -336,7 +346,6 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.margins: Theme.spacingXS
                 iconName: chatService.isLoading ? "stop_circle" : "send"
-                tooltipText: chatService.isLoading ? "停止生成" : "发送"
                 buttonSize: 32
                 iconSize: chatService.isLoading ? 20 : 16
                 iconColor: chatService.isLoading ? "#e05555" : Theme.primary
