@@ -38,9 +38,9 @@ Item {
             required property var modelData  // Quickshell 注入的屏幕对象
 
             title: "Deepseek"
-            slideoutWidth: 480
+            slideoutWidth: modelData.width*.25
             expandable: true
-            expandedWidthValue: 960
+            expandedWidthValue: modelData.width*.45
 
             content: ChatPanel {
                 chatService: chatLogic
